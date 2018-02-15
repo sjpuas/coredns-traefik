@@ -1,0 +1,5 @@
+.:53 {
+    file /coredns-config/docker.local docker.local
+    proxy . 8.8.8.8:53
+    log
+}
