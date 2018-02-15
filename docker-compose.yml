@@ -26,11 +26,10 @@ services:
       - "traefik.port=8080"
       - "traefik.backend=traefik"
       - "traefik.frontend.rule=Host:traefik.docker.local"
-      - "traefik.docker.network=traefik_default"
 
   httpbin:
     image: kennethreitz/httpbin
     labels:
       - "traefik.backend=httpbin"
       - "traefik.port=8080"
-      - "traefik.frontend.rule=Host:httpbin.docker.local" 
+      - "traefik.frontend.rule=Host:httpbin.docker.local"
