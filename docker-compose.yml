@@ -4,14 +4,20 @@ services:
 
   dns: 
     image: coredns/coredns
+    restart: always
     command: -conf coredns-config/Corefile
     ports:
       - 53:53/udp
     volumes:
       - ./config:/coredns-config/  
+    labels:
+      - "traefik.enable=false"      
+    networks: 
+      - proxy  
 
   traefik:
     image: traefik:latest
+    restart: always
     command: >
       --web --docker --api
       --docker.domain=docker.local --docker.watch
@@ -22,14 +28,22 @@ services:
     ports:
       - "80:80"
       - "8080:8080"    
+    networks: 
+      - proxy  
     labels:
+      - "traefik.backend=traefik"      
       - "traefik.port=8080"
-      - "traefik.backend=traefik"
       - "traefik.frontend.rule=Host:traefik.docker.local"
 
   httpbin:
     image: kennethreitz/httpbin
+    restart: always
     labels:
       - "traefik.backend=httpbin"
       - "traefik.port=8080"
       - "traefik.frontend.rule=Host:httpbin.docker.local"
+    networks: 
+      - proxy  
+
+networks: 
+  proxy:      
